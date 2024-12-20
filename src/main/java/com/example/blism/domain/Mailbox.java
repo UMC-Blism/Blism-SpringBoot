@@ -30,9 +30,6 @@ public class Mailbox {
     @Column(nullable = false)
     private int visibility; // 0: false, 1: true => Boolean으로 처리
 
-    @Column(nullable = false)
-    private Integer password;
-
     // 필요하다면 letter_id를 통해 특정 Letter 참조 가능
     // @ManyToOne(fetch = FetchType.LAZY)
     // @JoinColumn(name = "letter_id")

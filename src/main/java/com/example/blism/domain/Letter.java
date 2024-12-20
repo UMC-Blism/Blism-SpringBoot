@@ -36,7 +36,7 @@ public class Letter {
     private String content;
 
     @Column(nullable = false)
-    private Boolean visibility;
+    private Integer visibility;
 
     @Column(length = 255)
     private String photoUrl;
@@ -49,6 +49,9 @@ public class Letter {
 
     @Column(nullable = false)
     private Integer decorationNum;  // 0 ~ 4
+
+    @Column(nullable = false)
+    private Integer font;  // 0 ~ 4
 
     // Letter에 달린 replies
     @OneToMany(mappedBy = "letter", cascade = CascadeType.ALL, orphanRemoval = true)
