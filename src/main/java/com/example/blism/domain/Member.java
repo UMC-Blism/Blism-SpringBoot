@@ -23,7 +23,7 @@ public class Member {
     private String nickname;
 
     @Column(nullable = false)
-    private Integer checkCode;
+    private String checkCode;
 
     // 한 Member는 여러 Mailbox를 가질 수 있음
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
