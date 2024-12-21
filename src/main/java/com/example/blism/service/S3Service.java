@@ -31,7 +31,7 @@ public class S3Service {
 	@Value("${cloud.aws.s3.path.image}")
 	private String imageFolder;
 
-	private String upload(MultipartFile multipartFile) {
+	public String upload(MultipartFile multipartFile) {
 		String fileName = imageFolder + multipartFile.getOriginalFilename();
 
 		if (!(fileName.endsWith(".png") || fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(
@@ -60,11 +60,11 @@ public class S3Service {
 	}
 
    //이미지 가져오기(url) => public access 걸어놔서 가져올 수 있을 것임
-	private String getDecorationFileUrl(String fileName) {
+	public String getDecorationFileUrl(String fileName) {
 		String filePath = decorationFolder + fileName;
 		return amazonS3Client.getUrl(bucket, filePath).toString();
 	}
-	private String getImageFileUrl(String fileName) {
+	public String getImageFileUrl(String fileName) {
 		String filePath = imageFolder + fileName;
 		return amazonS3Client.getUrl(bucket, filePath).toString();
 	}

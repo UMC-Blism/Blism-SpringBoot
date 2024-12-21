@@ -1,5 +1,6 @@
 package com.example.blism.domain;
 
+import com.example.blism.dto.request.CreateLetterRequestDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -36,7 +37,7 @@ public class Letter {
     private String content;
 
     @Column(nullable = false)
-    private Boolean visibility;
+    private Integer visibility;
 
     @Column(length = 255)
     private String photoUrl;
@@ -50,8 +51,21 @@ public class Letter {
     @Column(nullable = false)
     private Integer decorationNum;  // 0 ~ 4
 
+    @Column(nullable = false)
+    private Integer font;  // 0 ~ 4
+
     // Letter에 달린 replies
     @OneToMany(mappedBy = "letter", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reply> replies = new ArrayList<>();
+
+    public void update(CreateLetterRequestDTO letter) {
+        this.content = letter.getContent();
+        this.visibility = letter.getVisibility();
+        this.photoUrl = letter.getPhotoUrl();
+        this.doorNum = letter.getDoorDesign();
+        this.colorNum = letter.getColorDesign();
+        this.decorationNum = letter.getDecorationDesign();
+        this.font = letter.getFont();
+    }
 
 }
