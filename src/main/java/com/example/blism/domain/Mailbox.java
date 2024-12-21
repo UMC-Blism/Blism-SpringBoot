@@ -20,7 +20,7 @@ public class Mailbox {
 
     // Member와 다대일
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "member_id", nullable = false)
     private Member owner;
 
     // 우체통에 속한 편지들
