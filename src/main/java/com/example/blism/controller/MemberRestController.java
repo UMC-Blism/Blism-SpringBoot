@@ -3,7 +3,7 @@ package com.example.blism.controller;
 import com.example.blism.apiPayload.ApiResponse;
 import com.example.blism.domain.Member;
 import com.example.blism.dto.request.MemberRequestDTO;
-;
+
 import com.example.blism.dto.response.MemberResponseDTO;
 import com.example.blism.service.MemberServiceImpl;
 

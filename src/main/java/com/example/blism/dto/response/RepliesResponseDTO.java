@@ -13,10 +13,8 @@ public class RepliesResponseDTO {
     public static class allrepliesDTO{
         Long letter_id;
         String content;
-        Long sender_id;
-        String sender_name;
         Long receiver_id;
-        String recipient_name;
+        String receiver_name;
 
     }
 }

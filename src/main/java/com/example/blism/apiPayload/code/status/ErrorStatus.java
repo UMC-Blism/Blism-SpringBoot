@@ -19,7 +19,6 @@ public enum ErrorStatus implements BaseErrorCode {
     MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, 404, "사용자가 없습니다."),
     NICKNAME_NOT_EXIST(HttpStatus.BAD_REQUEST, 400, "닉네임은 필수 입니다."),
 
-    ARTICLE_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "게시글이 없습니다.");
 
     private final HttpStatus httpStatus;
     private final int code;

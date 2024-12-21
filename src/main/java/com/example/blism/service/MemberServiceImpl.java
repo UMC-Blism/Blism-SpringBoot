@@ -75,7 +75,7 @@ public class MemberServiceImpl {
         return members.stream()
                 .map(member -> MemberResponseDTO.SearchMemberDTO.builder()
                         .nickname(member.getNickname())
-                        .memeber_id(member.getId())
+                        .member_id(member.getId())
                         .build())
                 .collect(Collectors.toList());
     }
