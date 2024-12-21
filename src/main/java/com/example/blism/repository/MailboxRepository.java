@@ -21,8 +21,8 @@ public interface MailboxRepository extends JpaRepository<Mailbox, Long> {
 	@Query("SELECT m FROM Mailbox m WHERE m.owner.id = :memberId AND YEAR(m.createdAt)= :year")
 	Mailbox findByMemberIdAndYear(@Param("memberId") Long memberId, @Param("year") String year);
 
-	@Query("SELECT m FROM Mailbox m WHERE m.owner.id = :memberId")
-	List<Mailbox> findByMemberId(@Param("memberId") Long memberId);
+	@Query("SELECT m FROM Mailbox m WHERE m.owner.id = :memberId AND YEAR(m.createdAt) < :year")
+	List<Mailbox> findByMemberIdAndPastYear(@Param("memberId") Long memberId, @Param("year") String year);
 
 	@Query("SELECT COUNT(m) FROM Mailbox m WHERE m.id = :memberId")
 	Integer countByMemberId(@Param("memberId") Long memberId);
