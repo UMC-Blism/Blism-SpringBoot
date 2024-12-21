@@ -1,12 +1,15 @@
 package com.example.blism.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.blism.apiPayload.ApiResponse;
+import com.example.blism.dto.request.MailboxVisibilityRequestDTO;
 import com.example.blism.dto.response.MailboxResponseDTO;
 import com.example.blism.dto.response.PastMailboxListResponseDTO;
 import com.example.blism.service.MailboxService;
@@ -46,6 +49,14 @@ public class MailboxRestController {
 	){
 		MailboxResponseDTO pastMailboxResponseDTO = mailboxService.getPastMailbox(year, memberId);
 		return ApiResponse.onSuccess(pastMailboxResponseDTO);
+	}
+
+	@PatchMapping("/visibility")
+	@Operation(summary = "우체통 공개 여부 수정", description = "우체통 공개 여부를 수정합니다.")
+	public ApiResponse<String> changeVisibility(
+		@RequestBody MailboxVisibilityRequestDTO requestDTO
+	){
+		return ApiResponse.onSuccess(mailboxService.updateVisibility(requestDTO));
 	}
 
 }

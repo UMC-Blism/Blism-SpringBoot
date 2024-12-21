@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.blism.domain.Letter;
 import com.example.blism.domain.Mailbox;
+import com.example.blism.dto.request.MailboxVisibilityRequestDTO;
 import com.example.blism.dto.response.LetterDesignResponseDTO;
 import com.example.blism.dto.response.MailboxResponseDTO;
 import com.example.blism.dto.response.PastMailboxListResponseDTO;
@@ -39,13 +40,8 @@ public class MailboxService{
 				String doorImage = doorNumberConverter(letter.getDoorNum())
 					+ letter.getColorNum().toString()+"_"
 					+ decoNumberConverter(letter.getDecorationNum())+".png";
-				String encodedDoorImage;
-				try {
-					encodedDoorImage = URLEncoder.encode(doorImage, StandardCharsets.UTF_8.toString());
-				} catch (Exception e) {
-					throw new RuntimeException("Error encoding URL for file: " + doorImage, e);
-				}
-				String doorImageUrl = s3Service.getDecorationFileUrl(encodedDoorImage);
+
+				String doorImageUrl = s3Service.getDecorationFileUrl(doorImage);
 
 				return LetterDesignResponseDTO.from(letter, doorImageUrl);
 
@@ -55,7 +51,8 @@ public class MailboxService{
 	}
 
 	public PastMailboxListResponseDTO getPastMailboxList(Long memberId) {
-		List<Mailbox> pastMailboxList = mailboxRepository.findByMemberId(memberId);
+		String year = LocalDateTime.now().getYear() + "";
+		List<Mailbox> pastMailboxList = mailboxRepository.findByMemberIdAndPastYear(memberId, year);
 		Integer count = mailboxRepository.countByMemberId(memberId);
 
 		List<PastMailboxResponseDTO> pastMailboxResponseDTOList = pastMailboxList.stream()
@@ -87,6 +84,14 @@ public class MailboxService{
 			}).collect(Collectors.toList());
 
 		return MailboxResponseDTO.from(pastMailbox,count, letterDesignResponseDTOList);
+	}
+
+	public String updateVisibility(MailboxVisibilityRequestDTO requestDTO) {
+		Mailbox targetMailbox = mailboxRepository.findById(requestDTO.getMailboxId()).orElse(null);
+		targetMailbox.changeVisibility(requestDTO.getVisibility());
+		mailboxRepository.save(targetMailbox);
+
+		return "공개 여부 변경";
 	}
 
 	public String doorNumberConverter(Integer number) {
