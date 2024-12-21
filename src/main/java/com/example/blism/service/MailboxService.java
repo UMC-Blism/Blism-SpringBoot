@@ -30,9 +30,9 @@ public class MailboxService{
 
 	public MailboxResponseDTO getMailbox(Long memberId) {
 		String year = LocalDateTime.now().getYear() + "";
-		Mailbox mailbox = mailboxRepository.findByMemberId(memberId, year);
+		Mailbox mailbox = mailboxRepository.findByMemberIdAndYear(memberId, year);
 		List<Letter> letters = mailbox.getLetters();
-		Integer count = letterRepository.countByMailboxId(memberId);
+		Integer count = letterRepository.countByMailboxId(mailbox.getId());
 
 		List<LetterDesignResponseDTO> letterDesignResponseDTOList = letters.stream()
 			.map(letter -> {
@@ -63,6 +63,30 @@ public class MailboxService{
 			.collect(Collectors.toList());
 
 		return PastMailboxListResponseDTO.from(memberId, count, pastMailboxResponseDTOList);
+	}
+
+	public MailboxResponseDTO getPastMailbox(String year, Long memberId) {
+		Mailbox pastMailbox = mailboxRepository.findByMemberIdAndYear(memberId, year);
+		List<Letter> letters = pastMailbox.getLetters();
+		Integer count = letterRepository.countByMailboxId(pastMailbox.getId());
+
+		List<LetterDesignResponseDTO> letterDesignResponseDTOList = letters.stream()
+			.map(letter -> {
+				String doorImage = doorNumberConverter(letter.getDoorNum())
+					+ letter.getColorNum().toString()+"_"
+					+ decoNumberConverter(letter.getDecorationNum())+".png";
+				String encodedDoorImage;
+				try {
+					encodedDoorImage = URLEncoder.encode(doorImage, StandardCharsets.UTF_8.toString());
+				} catch (Exception e) {
+					throw new RuntimeException("Error encoding URL for file: " + doorImage, e);
+				}
+				String doorImageUrl = s3Service.getDecorationFileUrl(encodedDoorImage);
+
+				return LetterDesignResponseDTO.from(letter, doorImageUrl);
+			}).collect(Collectors.toList());
+
+		return MailboxResponseDTO.from(pastMailbox,count, letterDesignResponseDTOList);
 	}
 
 	public String doorNumberConverter(Integer number) {
