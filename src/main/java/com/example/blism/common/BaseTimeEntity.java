@@ -30,6 +30,9 @@ public class BaseTimeEntity {
 		return createdAt.atZone(ZoneId.of("Asia/Seoul")).toLocalDateTime();
 	}
 
+	public LocalDateTime setCreatedAt(LocalDateTime createdAt) {
+		return createdAt.atZone(ZoneId.of("Asia/Seoul")).toLocalDateTime();
+	}
 	public LocalDateTime getUpdatedAt() {
 		return updatedAt.atZone(ZoneId.of("Asia/Seoul")).toLocalDateTime();
 	}
