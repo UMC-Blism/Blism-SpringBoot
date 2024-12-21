@@ -36,13 +36,26 @@ public class LetterController {
 
     @GetMapping("/{letterId}")
     public ResponseEntity<ApiResponse> getLetters(@PathVariable Long letterId){
+
         Letter letter = letterService.getLetter(letterId);
 
         if(letter == null){
             return ResponseEntity.ok().body(ApiResponse.onFailure(401, "편지가 존재하지 않습니다.", null));
         }
 
-        return ResponseEntity.ok().body(ApiResponse.onSuccess(letter));
+        LetterResponseDTO letterResponseDTO = LetterResponseDTO.builder()
+                .letterId(letter.getId())
+                .content(letter.getContent())
+                .photoUrl(letter.getPhotoUrl())
+                .font(letter.getFont())
+                .senderId(letter.getSender().getId())
+                .senderNickname(letter.getSender().getNickname())
+                .receiverId(letter.getReceiver().getId())
+                .receiverNickname(letter.getReceiver().getNickname())
+                .visibility(letter.getVisibility())
+                .build();
+
+        return ResponseEntity.ok().body(ApiResponse.onSuccess(letterResponseDTO));
 
 
     }
@@ -64,7 +77,7 @@ public class LetterController {
     @PutMapping(path = "/{letterId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ApiResponse> updateLetter(@RequestPart("image") MultipartFile image,
                                                     @PathVariable Long letterId,
-                                                    @RequestBody CreateLetterRequestDTO createLetterRequestDTO){
+                                                    @RequestPart CreateLetterRequestDTO createLetterRequestDTO){
         String photoUrl = null;
 
 
@@ -74,7 +87,9 @@ public class LetterController {
             photoUrl = s3Service.upload(image);
         }
 
-        letter.update(photoUrl, createLetterRequestDTO);
+        letter = letter.update(photoUrl, createLetterRequestDTO);
+
+        letterService.updateLetter(letter);
 
 
         return ResponseEntity.ok().body(ApiResponse.onSuccess(null));

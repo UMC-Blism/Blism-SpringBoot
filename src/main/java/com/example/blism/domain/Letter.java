@@ -60,7 +60,7 @@ public class Letter {
     @OneToMany(mappedBy = "letter", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reply> replies = new ArrayList<>();
 
-    public void update(String photoUrl, CreateLetterRequestDTO letter) {
+    public Letter update(String photoUrl, CreateLetterRequestDTO letter) {
 
         this.content = letter.getContent();
         this.visibility = letter.getVisibility();
@@ -71,6 +71,8 @@ public class Letter {
         this.colorNum = letter.getColorDesign();
         this.decorationNum = letter.getDecorationDesign();
         this.font = letter.getFont();
+
+        return this;
     }
 
 }
