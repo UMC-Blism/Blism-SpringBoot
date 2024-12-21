@@ -36,7 +36,7 @@ public class Letter {
     private String content;
 
     @Column(nullable = false)
-    private Boolean visibility;
+    private Integer visibility;
 
     @Column(length = 255)
     private String photoUrl;

@@ -18,7 +18,7 @@ public class MemberResponseDTO {
     @AllArgsConstructor
     @Setter
     public static class SearchMemberDTO{
-        Long memeber_id;
+        Long member_id;
         String nickname;
     }
 
