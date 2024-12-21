@@ -108,17 +108,16 @@ public class MailboxService{
 				return null;
 		}
 	}
-
 	public String decoNumberConverter(Integer number) {
 		switch (number) {
 			case 1:
-				return "꽃";
+				return "flower";
 			case 2:
-				return "리본";
+				return "ribon";
 			case 3:
-				return "리스";
+				return "wreath";
 			case 4:
-				return "종";
+				return "bell";
 			default:
 				return null;
 		}
