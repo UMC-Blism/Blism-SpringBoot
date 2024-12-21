@@ -59,6 +59,7 @@ public class Letter {
     private List<Reply> replies = new ArrayList<>();
 
     public void update(CreateLetterRequestDTO letter) {
+
             this.content = letter.getContent();
             this.visibility = letter.getVisibility();
             this.photoUrl = letter.getPhotoUrl();
@@ -69,3 +70,4 @@ public class Letter {
     }
 
 }
+
