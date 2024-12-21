@@ -11,4 +11,3 @@ import javax.net.ssl.SSLSession;
 public interface MailboxRepository extends JpaRepository<Mailbox, Long> {
     Mailbox findByOwner_Id(Long ownerId); // user -> owner로 변경
 }
-
