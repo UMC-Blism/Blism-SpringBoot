@@ -1,9 +1,6 @@
 package com.example.blism.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 public class MemberResponseDTO {
     @Builder
@@ -19,9 +16,19 @@ public class MemberResponseDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
+    @Setter
     public static class SearchMemberDTO{
-        Long userId;
-        Long mailboxId;
+        Long member_id;
+        String nickname;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Setter
+    public static class ValidateMemberDTO{
+        Long mailbox_id;
     }
 
 }

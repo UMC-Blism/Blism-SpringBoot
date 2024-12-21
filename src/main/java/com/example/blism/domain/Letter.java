@@ -59,13 +59,15 @@ public class Letter {
     private List<Reply> replies = new ArrayList<>();
 
     public void update(CreateLetterRequestDTO letter) {
-        this.content = letter.getContent();
-        this.visibility = letter.getVisibility();
-        this.photoUrl = letter.getPhotoUrl();
-        this.doorNum = letter.getDoorDesign();
-        this.colorNum = letter.getColorDesign();
-        this.decorationNum = letter.getDecorationDesign();
-        this.font = letter.getFont();
+
+            this.content = letter.getContent();
+            this.visibility = letter.getVisibility();
+            this.photoUrl = letter.getPhotoUrl();
+            this.doorNum = letter.getDoorDesign();
+            this.colorNum = letter.getColorDesign();
+            this.decorationNum = letter.getDecorationDesign();
+            this.font = letter.getFont();
     }
 
 }
+
