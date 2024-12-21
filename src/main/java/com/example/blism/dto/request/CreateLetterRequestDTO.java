@@ -33,9 +33,6 @@ public class CreateLetterRequestDTO {
     private int decorationDesign;
 
     @NotNull
-    private String photoUrl;
-
-    @NotNull
     private String content;
 
     @NotNull

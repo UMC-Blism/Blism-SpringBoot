@@ -5,9 +5,12 @@ import com.example.blism.domain.Letter;
 import com.example.blism.dto.request.CreateLetterRequestDTO;
 import com.example.blism.dto.response.LetterResponseDTO;
 import com.example.blism.service.LetterService;
+import com.example.blism.service.S3Service;
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -17,10 +20,12 @@ import java.util.List;
 public class LetterController {
 
     private final LetterService letterService;
+    private final S3Service s3Service;
 
-    @PostMapping("")
-    public ResponseEntity<ApiResponse> createLetter(@RequestBody CreateLetterRequestDTO createLetterRequestDTO){
-        boolean logicStatus = letterService.createLetter(createLetterRequestDTO);
+    @PostMapping(path = "", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<ApiResponse> createLetter(@RequestPart("image") MultipartFile image,
+                                                    @RequestPart CreateLetterRequestDTO createLetterRequestDTO){
+        boolean logicStatus = letterService.createLetter(image, createLetterRequestDTO);
         if(logicStatus){
             return ResponseEntity.ok().body(ApiResponse.onSuccess(null));
         }
@@ -31,30 +36,61 @@ public class LetterController {
 
     @GetMapping("/{letterId}")
     public ResponseEntity<ApiResponse> getLetters(@PathVariable Long letterId){
+
         Letter letter = letterService.getLetter(letterId);
 
-        return ResponseEntity.ok().body(ApiResponse.onSuccess(letter));
+        if(letter == null){
+            return ResponseEntity.ok().body(ApiResponse.onFailure(401, "편지가 존재하지 않습니다.", null));
+        }
+
+        LetterResponseDTO letterResponseDTO = LetterResponseDTO.builder()
+                .letterId(letter.getId())
+                .content(letter.getContent())
+                .photoUrl(letter.getPhotoUrl())
+                .font(letter.getFont())
+                .senderId(letter.getSender().getId())
+                .senderNickname(letter.getSender().getNickname())
+                .receiverId(letter.getReceiver().getId())
+                .receiverNickname(letter.getReceiver().getNickname())
+                .visibility(letter.getVisibility())
+                .build();
+
+        return ResponseEntity.ok().body(ApiResponse.onSuccess(letterResponseDTO));
+
 
     }
 
     @GetMapping("/{userId}/sent")
     public ResponseEntity<ApiResponse> getSentLetters(@PathVariable Long userId){
-        List<LetterResponseDTO> letters = letterService.getLetters(userId);
+        List<LetterResponseDTO> letters = letterService.getSentLetters(userId);
 
         return ResponseEntity.ok().body(ApiResponse.onSuccess(letters));
     }
 
     @GetMapping("/{userId}/received")
     public ResponseEntity<ApiResponse> getReceivedLetters(@PathVariable Long userId){
-        List<LetterResponseDTO> letters = letterService.getLetters(userId);
+        List<LetterResponseDTO> letters = letterService.getReceivedLetters(userId);
 
         return ResponseEntity.ok().body(ApiResponse.onSuccess(letters));
     }
 
-    @PutMapping("/{letterId}")
-    public ResponseEntity<ApiResponse> updateLetter(@PathVariable Long letterId, @RequestBody CreateLetterRequestDTO createLetterRequestDTO){
+    @PutMapping(path = "/{letterId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<ApiResponse> updateLetter(@RequestPart("image") MultipartFile image,
+                                                    @PathVariable Long letterId,
+                                                    @RequestPart CreateLetterRequestDTO createLetterRequestDTO){
+        String photoUrl = null;
+
+
         Letter letter = letterService.getLetter(letterId);
-        letter.update(createLetterRequestDTO);
+
+        if(!image.isEmpty()){
+            photoUrl = s3Service.upload(image);
+        }
+
+        letter = letter.update(photoUrl, createLetterRequestDTO);
+
+        letterService.updateLetter(letter);
+
 
         return ResponseEntity.ok().body(ApiResponse.onSuccess(null));
     }

@@ -2,8 +2,10 @@ package com.example.blism.domain;
 
 import com.example.blism.common.BaseTimeEntity;
 import com.example.blism.dto.request.CreateLetterRequestDTO;
+import com.example.blism.service.S3Service;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,15 +61,19 @@ public class Letter extends BaseTimeEntity {
     @OneToMany(mappedBy = "letter", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reply> replies = new ArrayList<>();
 
-    public void update(CreateLetterRequestDTO letter) {
+    public Letter update(String photoUrl, CreateLetterRequestDTO letter) {
 
-            this.content = letter.getContent();
-            this.visibility = letter.getVisibility();
-            this.photoUrl = letter.getPhotoUrl();
-            this.doorNum = letter.getDoorDesign();
-            this.colorNum = letter.getColorDesign();
-            this.decorationNum = letter.getDecorationDesign();
-            this.font = letter.getFont();
+        this.content = letter.getContent();
+        this.visibility = letter.getVisibility();
+        if(photoUrl != null) {
+            this.photoUrl = photoUrl;
+        }
+        this.doorNum = letter.getDoorDesign();
+        this.colorNum = letter.getColorDesign();
+        this.decorationNum = letter.getDecorationDesign();
+        this.font = letter.getFont();
+
+        return this;
     }
 
 }

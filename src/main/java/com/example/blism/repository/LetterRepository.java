@@ -10,10 +10,16 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface LetterRepository extends JpaRepository<Letter, Long> {
 
-	Optional<Letter> findAllBySenderId(Long userId);
+    Optional<List<Letter>> findAllBySenderId(Long userId);
+
+    Optional<List<Letter>> findAllByReceiverId(Long userId);
 
 	@Query("SELECT COUNT(l) FROM Letter l WHERE l.mailbox.id = :mailboxId")
 	Integer countByMailboxId(@Param("mailboxId") Long mailboxId);
