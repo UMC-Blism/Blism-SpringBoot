@@ -25,10 +25,10 @@ public class S3Service {
 	@Value("${cloud.aws.s3.bucket}")
 	private String bucket;
 
-	@Value("${cloud.aws.s3.folder.decoration}")
+	@Value("${cloud.aws.s3.path.decoration}")
 	private String decorationFolder;
 
-	@Value("${cloud.aws.s3.folder.image}")
+	@Value("${cloud.aws.s3.path.image}")
 	private String imageFolder;
 
 	private String upload(MultipartFile multipartFile) {
