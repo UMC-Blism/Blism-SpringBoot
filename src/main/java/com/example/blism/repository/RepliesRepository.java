@@ -9,5 +9,5 @@ import java.util.List;
 public interface RepliesRepository extends JpaRepository<Reply,Long> {
 
 
-    List<Reply> findAllBySenderIdContaning(Long senderId, Pageable pageable);
+    List<Reply> findAllBySenderIdContaining(Long senderId, Pageable pageable);
 }
