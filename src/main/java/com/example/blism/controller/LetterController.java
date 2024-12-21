@@ -25,7 +25,7 @@ public class LetterController {
             return ResponseEntity.ok().body(ApiResponse.onSuccess(null));
         }
         else{
-            return ResponseEntity.ok().body(ApiResponse.onFailure("LETTER401", "로직 수행 간 문제 발생", null));
+            return ResponseEntity.ok().body(ApiResponse.onFailure(401, "로직 수행 간 문제 발생", null));
         }
     }
 
