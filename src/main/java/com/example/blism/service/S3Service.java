@@ -31,7 +31,7 @@ public class S3Service {
 	@Value("${cloud.aws.s3.path.image}")
 	private String imageFolder;
 
-	private String upload(MultipartFile multipartFile) {
+	public String upload(MultipartFile multipartFile) {
 		String fileName = imageFolder + multipartFile.getOriginalFilename();
 
 		if (!(fileName.endsWith(".png") || fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(
@@ -51,7 +51,6 @@ public class S3Service {
 		try (InputStream inputStream = multipartFile.getInputStream()) {
 			amazonS3Client.putObject(
 				new PutObjectRequest(bucket, fileName, inputStream, metadata)
-					.withCannedAcl(CannedAccessControlList.PublicRead)
 			);
 		} catch (IOException e) {
 			throw new RuntimeException("파일 업로드 중 오류 발생", e);

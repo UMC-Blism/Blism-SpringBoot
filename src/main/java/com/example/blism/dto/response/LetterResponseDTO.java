@@ -1,8 +1,10 @@
 package com.example.blism.dto.response;
 
 import lombok.Builder;
+import lombok.Getter;
 
 @Builder
+@Getter
 public class LetterResponseDTO {
 
     private Long letterId;

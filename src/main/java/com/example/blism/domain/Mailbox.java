@@ -28,7 +28,7 @@ public class Mailbox {
     private List<Letter> letters = new ArrayList<>();
 
     @Column(nullable = false)
-    private int visibility; // 0: false, 1: true => Boolean으로 처리
+    private Integer visibility; // 0: false, 1: true => Boolean으로 처리
 
     // 답장과의 관계
     @OneToMany(mappedBy = "mailbox", cascade = CascadeType.ALL, orphanRemoval = true)
