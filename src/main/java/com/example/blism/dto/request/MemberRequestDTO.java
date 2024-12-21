@@ -10,7 +10,7 @@ public class MemberRequestDTO {
     @AllArgsConstructor
     public static class signupDTO{
         String nickname;
-        Integer check_code;
+        String check_code;
 
     }
 
@@ -20,8 +20,15 @@ public class MemberRequestDTO {
     @AllArgsConstructor
     public static class searchDTO{
         String nickname;
-        Integer check_code;
     }
 
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class validateDTO{
+        String nickname;
+        String check_code;
+    }
 
 }

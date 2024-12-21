@@ -7,9 +7,15 @@ import com.example.blism.dto.response.MemberResponseDTO;
 import com.example.blism.repository.MailboxRepository;
 import com.example.blism.repository.MemberRepository;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -53,22 +59,46 @@ public class MemberServiceImpl {
     public Member changenickname(String original_nickname, String new_nickname) {
         Member member = memberRepository.getMembersByNickname(original_nickname);
         member.setNickname(new_nickname);
+
+
         return member;
     }
 
 
+    // ------ List 형태 ----
     @Transactional
-    public MemberResponseDTO.SearchMemberDTO searchmember(MemberRequestDTO.searchDTO request) {
-        String nickname = request.getNickname();
-        Integer checkCode = request.getCheck_code();
+    public List<MemberResponseDTO.SearchMemberDTO> findNicknameList(MemberRequestDTO.searchDTO request) {
+        Pageable pageable = PageRequest.of(0, 10);
 
-        Member member =  memberRepository.findByNicknameAndCheckCode(nickname, checkCode);
+        List<Member> members = memberRepository.findByNicknameContaining(request.getNickname(), pageable);
 
-        return  MemberResponseDTO.SearchMemberDTO.builder()
-                .mailboxId(member.getMailboxes().get(0).getId())
-                .userId(member.getId())
-                .build();
-
+        return members.stream()
+                .map(member -> MemberResponseDTO.SearchMemberDTO.builder()
+                        .nickname(member.getNickname())
+                        .memeber_id(member.getId())
+                        .build())
+                .collect(Collectors.toList());
     }
+
+    @Transactional
+    public MemberResponseDTO.ValidateMemberDTO validateCheckcode(MemberRequestDTO.validateDTO request) {
+        String checkcode1;
+
+        String checkcode2 = request.getCheck_code();
+        Member member = memberRepository.findByNickname(request.getNickname());
+        checkcode1 = member.getCheckCode();
+
+        if (checkcode1.equals(checkcode2)) {
+            Long mailbox_id = mailboxRepository.findByOwner_Id(member.getId()).getId(); // findByUser_Id -> findByOwner_Id
+
+            return MemberResponseDTO.ValidateMemberDTO.builder()
+                    .mailbox_id(mailbox_id)
+                    .build();
+        } else {
+            return null;
+        }
+    }
+
+
 
 }
