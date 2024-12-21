@@ -19,6 +19,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -42,6 +43,7 @@ public class RepliesServiceImpl {
         Member sender = memberRepository.findById(request.getSender_id()).get();
         Member receiver = memberRepository.findById(request.getReceiver_id()).get();
 
+
         Reply newReply = Reply.builder()
                 .content(request.getContent())
                 .letter(letter)
@@ -51,6 +53,7 @@ public class RepliesServiceImpl {
                 .sender(sender)
                 .receiver(receiver)
                 .build();
+
 
         return repliesRepository.save(newReply);
     }
@@ -68,7 +71,7 @@ public class RepliesServiceImpl {
                         .content(reply.getContent())
                         .letter_id(reply.getLetter().getId())
                         .receiver_id(reply.getReceiver().getId())
-                        //.receiver_name(reply.getReceiver().getNickname())
+                        .receiver_name(reply.getReceiver().getNickname())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -82,7 +85,7 @@ public class RepliesServiceImpl {
     public List<RepliesResponseDTO.allreceivedrepliesDTO> getAllReceivedReplies(Long member_id) {
         Pageable pageable = PageRequest.of(0, 10);
 
-        List<Reply> allReplies = repliesRepository.findAllBySenderId(member_id, pageable);
+        List<Reply> allReplies = repliesRepository.findAllByReceiverId(member_id, pageable);
         // json 형식으로 변
 
         return allReplies.stream()
