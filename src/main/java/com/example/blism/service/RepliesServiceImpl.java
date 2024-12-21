@@ -72,6 +72,7 @@ public class RepliesServiceImpl {
                         .letter_id(reply.getLetter().getId())
                         .receiver_id(reply.getReceiver().getId())
                         .receiver_name(reply.getReceiver().getNickname())
+                        .created_at(reply.getCreatedAt())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -94,6 +95,7 @@ public class RepliesServiceImpl {
                         .letter_id(reply.getLetter().getId())
                         .sender_name(reply.getSender().getNickname())
                         .sender_id(reply.getSender().getId())
+                        .created_at(reply.getCreatedAt())
                         .build())
                 .collect(Collectors.toList());
     }
