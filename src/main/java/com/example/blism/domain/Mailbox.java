@@ -38,6 +38,7 @@ public class Mailbox extends BaseTimeEntity {
     @Builder
     private Mailbox(Member owner) {
         this.owner = owner;
+        this.visibility = 1;
     }
 
     public static Mailbox createMailbox(Member owner) {

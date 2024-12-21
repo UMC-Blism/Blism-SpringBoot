@@ -31,9 +31,7 @@ public class MemberServiceImpl {
                 .nickname(request.getNickname())
                 .build();
 
-        Mailbox newMailbox = Mailbox.builder()
-                .owner(newMember)
-                .build();
+        Mailbox newMailbox = Mailbox.createMailbox(newMember);
 
         memberRepository.save(newMember);
         mailboxRepository.save(newMailbox);
