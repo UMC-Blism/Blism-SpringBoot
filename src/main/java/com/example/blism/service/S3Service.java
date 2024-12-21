@@ -51,7 +51,6 @@ public class S3Service {
 		try (InputStream inputStream = multipartFile.getInputStream()) {
 			amazonS3Client.putObject(
 				new PutObjectRequest(bucket, fileName, inputStream, metadata)
-					.withCannedAcl(CannedAccessControlList.PublicRead)
 			);
 		} catch (IOException e) {
 			throw new RuntimeException("파일 업로드 중 오류 발생", e);
