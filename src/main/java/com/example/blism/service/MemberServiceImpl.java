@@ -24,7 +24,7 @@ public class MemberServiceImpl {
     private final MailboxRepository mailboxRepository;
 
     @Transactional
-    public Member joinMember(MemberRequestDTO.signupDTO request) {
+    public Long joinMember(MemberRequestDTO.signupDTO request) {
 
         Member newMember = Member.builder()
                 .checkCode(request.getCheck_code())
@@ -37,7 +37,7 @@ public class MemberServiceImpl {
 
         memberRepository.save(newMember);
         mailboxRepository.save(newMailbox);
-        return newMember;
+        return newMember.getId();
     }
 
     @Transactional

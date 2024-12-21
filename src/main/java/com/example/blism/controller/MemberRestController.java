@@ -25,9 +25,9 @@ public class MemberRestController {
 
     @PostMapping("/signup")
     public ApiResponse<String> join(@RequestBody MemberRequestDTO.signupDTO request){
-        Member member = memberService.joinMember(request);
+        Long member_id  = memberService.joinMember(request);
 
-        return ApiResponse.onSuccess("회원가입 완료");
+        return ApiResponse.onSuccess(member_id.toString());
     }
 
     @GetMapping("/{nickname}")

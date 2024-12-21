@@ -55,7 +55,7 @@ public class RepliesServiceImpl {
         Member sender = memberRepository.findById(sender_id).get();
         Pageable pageable = PageRequest.of(0, 10);
 
-        List<Reply> allReplies = repliesRepository.findAllBySenderIdContaning(sender_id, pageable);
+        List<Reply> allReplies = repliesRepository.findAllBySenderIdContaining(sender_id, pageable);
 
         // json 형식으로 변환
         Letter letter = letterRepository.findById(sender_id).get();
