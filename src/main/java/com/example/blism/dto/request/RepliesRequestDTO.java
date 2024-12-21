@@ -11,13 +11,18 @@ public class RepliesRequestDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class addreplyDTO{
-        Long id;
-        Long sender_id;
-        Long receiver_id;
         String photo_url;
         String content;
-        Long mailbox_id;
         Long letter_id;
+        String image_url;
+        Integer font;
+        Long sender_id;
+        Long receiver_id;
+        Long mailbox_id;
+
 
     }
+
+
+
 }
