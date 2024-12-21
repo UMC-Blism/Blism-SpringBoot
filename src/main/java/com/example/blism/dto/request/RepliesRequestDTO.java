@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 public class RepliesRequestDTO {
     @Builder
     @Getter
@@ -19,6 +21,8 @@ public class RepliesRequestDTO {
         Long sender_id;
         Long receiver_id;
         Long mailbox_id;
+        LocalDateTime created_at;
+
 
 
     }

@@ -32,9 +32,9 @@ public class ReplyRestController {
     }
 
     @GetMapping("/{memberid}/sent")
-    @Operation(summary = "멤버에게 온 답장 전체 조회",description = "특정 멤버의 답장을 전체 조회하는 API 입니다")
+    @Operation(summary = "멤버가 보낸 답장 전체 조회",description = "특정 멤버가 보낸 답장을 전체 조회하는 API 입니다")
     public ApiResponse<List<RepliesResponseDTO.allsentrepliesDTO>> getAllReplies(
-            @RequestParam(name = "보내는 유저 아이디") Long sender_id
+            @RequestParam(name = "memberid") Long sender_id
     ){
         return ApiResponse.onSuccess(repliesService.getAllSentReplies(sender_id));
     }
@@ -42,7 +42,7 @@ public class ReplyRestController {
     @GetMapping("/{memberid}/received")
     @Operation(summary = "유저가 받은 답장 전체 조회",description = "특정 멤버가 받은 답장을 전체 조회하는 API 입니다")
     public ApiResponse<List<RepliesResponseDTO.allreceivedrepliesDTO>> getAllReceivedReplies(
-            @RequestParam(name = "보내는 유저 아이디") Long member_id
+            @RequestParam(name = "memberid") Long member_id
     ){
         return ApiResponse.onSuccess(repliesService.getAllReceivedReplies(member_id));
     }
