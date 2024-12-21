@@ -1,6 +1,7 @@
 package com.example.blism.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,4 +37,15 @@ public class MailboxRestController {
 		PastMailboxListResponseDTO pastMailboxes = mailboxService.getPastMailboxList(memberId);
 		return ApiResponse.onSuccess(pastMailboxes);
 	}
+
+	@GetMapping("/past/{memberId}")
+	@Operation(summary = "특정 년도 우체통 조회", description = "특정 연도 우체통을 조회합니다.")
+	public ApiResponse<MailboxResponseDTO> getPastMailbox (
+		@RequestParam String year,
+		@PathVariable Long memberId
+	){
+		MailboxResponseDTO pastMailboxResponseDTO = mailboxService.getPastMailbox(year, memberId);
+		return ApiResponse.onSuccess(pastMailboxResponseDTO);
+	}
+
 }
