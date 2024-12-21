@@ -4,12 +4,15 @@ import com.example.blism.domain.Letter;
 import com.example.blism.domain.Mailbox;
 import com.example.blism.domain.Member;
 import com.example.blism.dto.request.CreateLetterRequestDTO;
+import com.example.blism.dto.response.LetterResponseDTO;
 import com.example.blism.repository.LetterRepository;
 import com.example.blism.repository.MailboxRepository;
 import com.example.blism.repository.MemberRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -57,4 +60,28 @@ public class LetterService {
 
         return true;
     }
+
+    public Letter getLetter(Long letterId) {
+        return letterRepository.findById(letterId).orElse(null);
+    }
+
+    public List<LetterResponseDTO> getLetters(Long userId) {
+        // letterRepository에서 userId로 검색된 결과를 스트림으로 변환
+        return letterRepository.findAllBySenderId(userId).stream()
+                .map(letter -> LetterResponseDTO.builder()
+                        .letterId(letter.getId())
+                        .content(letter.getContent())
+                        .photoUrl(letter.getPhotoUrl())
+                        .font(letter.getFont())
+                        .senderId(letter.getSender().getId())
+                        .senderNickname(letter.getSender().getNickname())
+                        .receiverId(letter.getReceiver().getId())
+                        .receiverNickname(letter.getReceiver().getNickname())
+                        .visibility(letter.getVisibility())
+                        .build()
+                )
+                .toList(); // 스트림 결과를 List로 변환
+    }
+
+
 }
