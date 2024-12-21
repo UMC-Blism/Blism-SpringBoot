@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.blism.common.BaseTimeEntity;
 import com.example.blism.domain.Letter;
 import com.example.blism.domain.Mailbox;
 import com.example.blism.dto.response.LetterDesignResponseDTO;
@@ -24,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class MailboxService extends BaseTimeEntity {
+public class MailboxService{
 	private final MailboxRepository mailboxRepository;
 	private final LetterRepository letterRepository;
 	private final S3Service s3Service;

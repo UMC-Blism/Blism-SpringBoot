@@ -1,5 +1,6 @@
 package com.example.blism.domain;
 
+import com.example.blism.common.BaseTimeEntity;
 import com.example.blism.dto.request.CreateLetterRequestDTO;
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Table(name = "letters")
-public class Letter {
+public class Letter extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

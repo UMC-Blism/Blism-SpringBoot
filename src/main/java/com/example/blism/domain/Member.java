@@ -6,13 +6,15 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.blism.common.BaseTimeEntity;
+
 @Entity
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Table(name = "members")
-public class Member {
+public class Member extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
