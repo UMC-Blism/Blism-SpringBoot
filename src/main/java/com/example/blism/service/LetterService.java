@@ -81,6 +81,7 @@ public class LetterService {
                         .receiverId(letter.getReceiver().getId())
                         .receiverNickname(letter.getReceiver().getNickname())
                         .visibility(letter.getVisibility())
+                        .createdAt(letter.getCreatedAt())
                         .build()
                 )
                 .toList();
@@ -99,6 +100,7 @@ public class LetterService {
                         .receiverId(letter.getReceiver().getId())
                         .receiverNickname(letter.getReceiver().getNickname())
                         .visibility(letter.getVisibility())
+                        .createdAt(letter.getCreatedAt())
                         .build()
                 )
                 .toList();

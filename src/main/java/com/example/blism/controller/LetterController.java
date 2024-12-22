@@ -57,9 +57,28 @@ public class LetterController {
 
     @GetMapping("/{letterId}")
     @Operation(summary = "편지 조회", description = "특정 ID의 편지를 조회합니다.")
-    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "편지 조회 성공",
-            content = @Content(schema = @Schema(implementation = LetterResponseDTO.class),
-                    examples = @ExampleObject(name = "successExample", value = "{\"letterId\":1,\"senderId\":1,\"receiverId\":2,\"content\":\"Hello!\",\"photoUrl\":\"https://example.com/photo.jpg\",\"font\":1,\"visibility\":1}")))
+    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = "편지 조회 성공",
+            content = @Content(
+                    schema = @Schema(implementation = LetterResponseDTO.class),
+                    examples = @ExampleObject(
+                            name = "successExample",
+                            value = """
+                                {
+                                    "letterId": 1,
+                                    "senderId": 1,
+                                    "receiverId": 2,
+                                    "content": "Hello!",
+                                    "photoUrl": "https://example.com/photo.jpg",
+                                    "font": 1,
+                                    "visibility": 1,
+                                    "createdAt": "2024-12-22T04:35:08.367236"
+                                }
+                                """
+                    )
+            )
+    )
     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "편지 조회 실패",
             content = @Content(schema = @Schema(implementation = ApiResponse.class),
                     examples = @ExampleObject(name = "failureExample", value = "{\"status\":\"failure\",\"message\":\"편지가 존재하지 않습니다.\"}")))
@@ -90,7 +109,17 @@ public class LetterController {
     @Operation(summary = "보낸 편지 목록 조회", description = "특정 사용자가 보낸 모든 편지를 조회합니다.")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "보낸 편지 조회 성공",
             content = @Content(schema = @Schema(implementation = List.class),
-                    examples = @ExampleObject(name = "successExample", value = "[{\"letterId\":1,\"senderId\":1,\"receiverId\":2,\"content\":\"Hello!\",\"photoUrl\":\"https://example.com/photo.jpg\",\"font\":1,\"visibility\":1}]")))
+                    examples = @ExampleObject(name = "successExample",
+                            value = "[{" +
+                                    "\"letterId\":1," +
+                                    "\"senderId\":1," +
+                                    "\"receiverId\":2," +
+                                    "\"content\":\"Hello!\"," +
+                                    "\"photoUrl\":\"https://example.com/photo.jpg\"," +
+                                    "\"font\":1," +
+                                    "\"visibility\":1}," +
+                                    "\"createdAt\": \"2024-12-22T04:35:08.367236\"]"
+                    )))
     public ResponseEntity<ApiResponse> getSentLetters(@PathVariable Long userId) {
         List<LetterResponseDTO> letters = letterService.getSentLetters(userId);
 
@@ -101,24 +130,24 @@ public class LetterController {
     @Operation(summary = "받은 편지 목록 조회", description = "특정 사용자가 받은 모든 편지를 조회합니다.")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "받은 편지 조회 성공",
             content = @Content(schema = @Schema(implementation = List.class),
-                    examples = @ExampleObject(name = "successExample", value = "[{\"letterId\":1,\"senderId\":1,\"receiverId\":2,\"content\":\"Hello!\",\"photoUrl\":\"https://example.com/photo.jpg\",\"font\":1,\"visibility\":1}]")))
+                    examples = @ExampleObject(name = "successExample",
+                            value = "[{" +
+                                    "\"letterId\":1," +
+                                    "\"senderId\":1," +
+                                    "\"receiverId\":2," +
+                                    "\"content\":\"Hello!\"," +
+                                    "\"photoUrl\":\"https://example.com/photo.jpg\"," +
+                                    "\"font\":1," +
+                                    "\"visibility\":1}," +
+                                    "\"createdAt\": \"2024-12-22T04:35:08.367236\"]"
+                    )))
     public ResponseEntity<ApiResponse> getReceivedLetters(@PathVariable Long userId) {
         List<LetterResponseDTO> letters = letterService.getReceivedLetters(userId);
 
         return ResponseEntity.ok().body(ApiResponse.onSuccess(letters));
     }
 
-    @PutMapping("/{letterId}")
-    @Operation(summary = "편지 수정", description = "특정 ID의 편지를 수정합니다.",
-            parameters = {
-                    @io.swagger.v3.oas.annotations.Parameter(name = "image", description = "이미지 파일", required = true, content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE)),
-                    @io.swagger.v3.oas.annotations.Parameter(name = "createLetterRequestDTO", description = "편지 수정 요청 데이터", required = true,
-                            content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = CreateLetterRequestDTO.class),
-                                    examples = @ExampleObject(name = "updateLetterRequestExample",
-                                            value = "{\"senderId\":1,\"receiverId\":2,\"mailboxId\":3,\"doorDesign\":2,\"colorDesign\":1,\"decorationDesign\":3,\"content\":\"Updated Content!\",\"font\":2,\"visibility\":0}")))
-            })
-
+    @PutMapping(value = "/{letterId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "편지 수정 성공",
             content = @Content(schema = @Schema(implementation = ApiResponse.class),
                     examples = @ExampleObject(name = "successExample", value = "{\"status\":\"success\",\"data\":null}")))

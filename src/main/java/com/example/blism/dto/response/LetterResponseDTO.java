@@ -3,6 +3,8 @@ package com.example.blism.dto.response;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Builder
 @Getter
 public class LetterResponseDTO {
@@ -16,4 +18,5 @@ public class LetterResponseDTO {
     private String photoUrl;
     private Integer font;
     private Integer visibility;
+    private LocalDateTime createdAt;
 }
