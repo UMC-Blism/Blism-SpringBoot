@@ -13,21 +13,26 @@ import lombok.NoArgsConstructor;
 public class MailboxResponseDTO {
 
 	private Long memberId;
+	private Long mailboxId;
 	private Integer count;
 	private Integer visibility;
 	private List<LetterDesignResponseDTO> letters;
 
 	@Builder
-	private MailboxResponseDTO(Long memberId, Integer count, List<LetterDesignResponseDTO> letters) {
+	private MailboxResponseDTO(Long memberId, Long mailboxId, Integer count, Integer visibility, List<LetterDesignResponseDTO> letters) {
 		this.memberId = memberId;
+		this.mailboxId = mailboxId;
 		this.count = count;
 		this.letters = letters;
+		this.visibility = visibility;
 	}
 
 	public static MailboxResponseDTO from(Mailbox mailbox, Integer count, List<LetterDesignResponseDTO> letters) {
 		return MailboxResponseDTO.builder()
 			.memberId(mailbox.getOwner().getId())
+			.mailboxId(mailbox.getId())
 			.count(count)
+			.visibility(mailbox.getVisibility())
 			.letters(letters)
 			.build();
 	}
