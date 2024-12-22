@@ -1,5 +1,6 @@
 package com.example.blism.service;
 
+import com.example.blism.apiPayload.code.BaseErrorCode;
 import com.example.blism.domain.Letter;
 import com.example.blism.domain.Mailbox;
 import com.example.blism.domain.Member;
@@ -25,25 +26,26 @@ public class LetterService {
     private final MailboxRepository mailboxRepository;
     private final S3Service s3Service;
 
-    public boolean createLetter(MultipartFile image, CreateLetterRequestDTO dto) {
+    public String createLetter(MultipartFile image, CreateLetterRequestDTO dto) {
 
-        String photoUrl = s3Service.upload(image);
 
         Optional<Member> sender = memberRepository.findById(dto.getSenderId());
         Optional<Member> receiver = memberRepository.findById(dto.getReceiverId());
         Optional<Mailbox> mailbox = mailboxRepository.findById(dto.getMailboxId());
 
         if (sender.isEmpty()) {
-            return false;
+            return "보내는 사람이 없습니다.";
         }
 
         if (receiver.isEmpty()) {
-            return false;
+            return "받는 사람이 없습니다.";
         }
 
         if(mailbox.isEmpty()){
-            return false;
+            return "우체통이 존재하지 않습니다.";
         }
+
+        String photoUrl = s3Service.upload(image);
 
         Letter letter = Letter.builder()
                 .sender(sender.get())
@@ -60,7 +62,7 @@ public class LetterService {
 
         letterRepository.save(letter);
 
-        return true;
+        return "편지 생성 성공";
     }
 
     public Letter getLetter(Long letterId) {
