@@ -49,9 +49,11 @@ public class Mailbox extends BaseTimeEntity {
 
     public void changeVisibility(Integer visibility) {
         if(visibility == 1)
+            this.visibility = 0;
+        else if( visibility == 0)
             this.visibility = 1;
         else
-            this.visibility = 0;
+            this.visibility = visibility;
     }
 
     public void addLetter(List<Letter> letters) {
