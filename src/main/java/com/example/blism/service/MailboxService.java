@@ -88,10 +88,17 @@ public class MailboxService{
 
 	public String updateVisibility(MailboxVisibilityRequestDTO requestDTO) {
 		Mailbox targetMailbox = mailboxRepository.findById(requestDTO.getMailboxId()).orElse(null);
-		targetMailbox.changeVisibility(requestDTO.getVisibility());
-		mailboxRepository.save(targetMailbox);
 
-		return "공개 여부 변경";
+		if(requestDTO.getVisibility() == 1) {
+			targetMailbox.changeVisibility(requestDTO.getVisibility());
+			mailboxRepository.save(targetMailbox);
+			return "우체통을 비공개로 설정합니다.";
+		} else if (requestDTO.getVisibility() == 0) {
+			targetMailbox.changeVisibility(requestDTO.getVisibility());
+			mailboxRepository.save(targetMailbox);
+			return "우체통을 공개로 설정합니다.";
+		} else
+			return "잘못된 입력입니다. 전환 실패";
 	}
 
 	public String doorNumberConverter(Integer number) {
