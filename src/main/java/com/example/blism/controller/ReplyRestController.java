@@ -54,4 +54,12 @@ public class ReplyRestController {
         return ApiResponse.onSuccess(repliesService.getAllReceivedReplies(member_id));
     }
 
+    @GetMapping("/{replyid}")
+    @Operation(summary = "답장 조회",description = "답장을 조회하는 API 입니다")
+    public ApiResponse<RepliesResponseDTO.getreplyDTO> getreply(
+            @RequestParam(name = "replyid") Long replyid
+    ){
+        return ApiResponse.onSuccess(repliesService.getreply(replyid));
+    }
+
 }
