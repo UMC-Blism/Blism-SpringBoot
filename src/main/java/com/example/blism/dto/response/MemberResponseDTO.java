@@ -29,6 +29,7 @@ public class MemberResponseDTO {
     @Setter
     public static class ValidateMemberDTO{
         Long mailbox_id;
+        Long member_id;
     }
 
 }
