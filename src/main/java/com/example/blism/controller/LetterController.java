@@ -122,6 +122,7 @@ public class LetterController {
                                     "    \"letterId\": 1,\n" +
                                     "    \"senderId\": 1,\n" +
                                     "    \"receiverId\": 2,\n" +
+                                    "    \"mailboxId\": 2,\n" +
                                     "    \"content\": \"Hello!\",\n" +
                                     "    \"photoUrl\": \"https://example.com/photo.jpg\",\n" +
                                     "    \"font\": 1,\n" +
@@ -171,6 +172,7 @@ public class LetterController {
                 .senderNickname(letter.getSender().getNickname())
                 .receiverId(letter.getReceiver().getId())
                 .receiverNickname(letter.getReceiver().getNickname())
+                .mailBoxId(letter.getMailbox().getId())
                 .visibility(letter.getVisibility())
                 .build();
 
@@ -195,6 +197,7 @@ public class LetterController {
                                     "      \"letterId\": 1,\n" +
                                     "      \"senderId\": 1,\n" +
                                     "      \"receiverId\": 2,\n" +
+                                    "    \"mailboxId\": 2,\n" +
                                     "      \"content\": \"Hello!\",\n" +
                                     "      \"photoUrl\": \"https://example.com/photo.jpg\",\n" +
                                     "      \"font\": 1,\n" +
@@ -208,6 +211,7 @@ public class LetterController {
                                     "      \"letterId\": 2,\n" +
                                     "      \"senderId\": 1,\n" +
                                     "      \"receiverId\": 3,\n" +
+                                    "    \"mailboxId\": 2,\n" +
                                     "      \"content\": \"How are you?\",\n" +
                                     "      \"photoUrl\": \"https://example.com/photo2.jpg\",\n" +
                                     "      \"font\": 2,\n" +
@@ -268,6 +272,7 @@ public class LetterController {
                                     "      \"letterId\": 1,\n" +
                                     "      \"senderId\": 1,\n" +
                                     "      \"receiverId\": 2,\n" +
+                                    "    \"mailboxId\": 2,\n" +
                                     "      \"content\": \"Hello!\",\n" +
                                     "      \"photoUrl\": \"https://example.com/photo.jpg\",\n" +
                                     "      \"font\": 1,\n" +
@@ -281,6 +286,7 @@ public class LetterController {
                                     "      \"letterId\": 2,\n" +
                                     "      \"senderId\": 1,\n" +
                                     "      \"receiverId\": 3,\n" +
+                                    "    \"mailboxId\": 2,\n" +
                                     "      \"content\": \"How are you?\",\n" +
                                     "      \"photoUrl\": \"https://example.com/photo2.jpg\",\n" +
                                     "      \"font\": 2,\n" +
