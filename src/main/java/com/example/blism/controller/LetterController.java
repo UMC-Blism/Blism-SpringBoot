@@ -96,11 +96,9 @@ public class LetterController {
         String logicStatus = letterService.createLetter(image, createLetterRequestDTO);
         if (logicStatus.equals("보내는 사람이 없습니다.")) {
             return ResponseEntity.ok().body(ApiResponse.onFailure(401, "보내는 사람이 없습니다.", null));
-        }
-        else if (logicStatus.equals("받는 사람이 없습니다.")){
+        } else if (logicStatus.equals("받는 사람이 없습니다.")) {
             return ResponseEntity.ok().body(ApiResponse.onFailure(401, "받는 사람이 없습니다.", null));
-        }
-        else if (logicStatus.equals("우체통이 존재하지 않습니다.")){
+        } else if (logicStatus.equals("우체통이 존재하지 않습니다.")) {
             return ResponseEntity.ok().body(ApiResponse.onFailure(401, "우체통이 존재하지 않습니다.", null));
         }
 
@@ -127,6 +125,9 @@ public class LetterController {
                                     "    \"content\": \"Hello!\",\n" +
                                     "    \"photoUrl\": \"https://example.com/photo.jpg\",\n" +
                                     "    \"font\": 1,\n" +
+                                    "    \"doorDesign\": 1,\n" +
+                                    "    \"colorDesign\": 1,\n" +
+                                    "    \"decorationDesign\": 1,\n" +
                                     "    \"visibility\": 1,\n" +
                                     "    \"createdAt\": \"2024-12-22T04:35:08.367236\"\n" +
                                     "  }\n" +
@@ -197,6 +198,9 @@ public class LetterController {
                                     "      \"content\": \"Hello!\",\n" +
                                     "      \"photoUrl\": \"https://example.com/photo.jpg\",\n" +
                                     "      \"font\": 1,\n" +
+                                    "    \"doorDesign\": 1,\n" +
+                                    "    \"colorDesign\": 1,\n" +
+                                    "    \"decorationDesign\": 1,\n" +
                                     "      \"visibility\": 1,\n" +
                                     "      \"createdAt\": \"2024-12-22T04:35:08.367236\"\n" +
                                     "    },\n" +
@@ -207,6 +211,9 @@ public class LetterController {
                                     "      \"content\": \"How are you?\",\n" +
                                     "      \"photoUrl\": \"https://example.com/photo2.jpg\",\n" +
                                     "      \"font\": 2,\n" +
+                                    "    \"doorDesign\": 1,\n" +
+                                    "    \"colorDesign\": 1,\n" +
+                                    "    \"decorationDesign\": 1,\n" +
                                     "      \"visibility\": 1,\n" +
                                     "      \"createdAt\": \"2024-12-22T05:10:15.123456\"\n" +
                                     "    }\n" +
@@ -264,6 +271,9 @@ public class LetterController {
                                     "      \"content\": \"Hello!\",\n" +
                                     "      \"photoUrl\": \"https://example.com/photo.jpg\",\n" +
                                     "      \"font\": 1,\n" +
+                                    "    \"doorDesign\": 1,\n" +
+                                    "    \"colorDesign\": 1,\n" +
+                                    "    \"decorationDesign\": 1,\n" +
                                     "      \"visibility\": 1,\n" +
                                     "      \"createdAt\": \"2024-12-22T04:35:08.367236\"\n" +
                                     "    },\n" +
@@ -274,6 +284,9 @@ public class LetterController {
                                     "      \"content\": \"How are you?\",\n" +
                                     "      \"photoUrl\": \"https://example.com/photo2.jpg\",\n" +
                                     "      \"font\": 2,\n" +
+                                    "    \"doorDesign\": 1,\n" +
+                                    "    \"colorDesign\": 1,\n" +
+                                    "    \"decorationDesign\": 1,\n" +
                                     "      \"visibility\": 1,\n" +
                                     "      \"createdAt\": \"2024-12-22T05:10:15.123456\"\n" +
                                     "    }\n" +
