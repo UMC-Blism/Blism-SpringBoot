@@ -1,18 +1,18 @@
 package com.example.blism.domain;
-
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.blism.common.BaseTimeEntity;
+
 @Entity
 @Getter
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Table(name = "mailboxes")
-public class Mailbox {
+public class Mailbox extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,17 +28,41 @@ public class Mailbox {
     private List<Letter> letters = new ArrayList<>();
 
     @Column(nullable = false)
-    private int visibility; // 0: false, 1: true => Boolean으로 처리
-
-
-
-    // 필요하다면 letter_id를 통해 특정 Letter 참조 가능
-    // @ManyToOne(fetch = FetchType.LAZY)
-    // @JoinColumn(name = "letter_id")
-    // private Letter mainLetter;
+    private Integer visibility; // 0: false, 1: true => Boolean으로 처리
 
     // 답장과의 관계
     @OneToMany(mappedBy = "mailbox", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reply> replies = new ArrayList<>();
 
+    @Builder
+    private Mailbox(Member owner) {
+        this.owner = owner;
+    }
+
+    public static Mailbox createMailbox(Member owner) {
+        return Mailbox.builder()
+                .owner(owner)
+                .build();
+    }
+
+    public void changeVisibility(int visibility) {
+        if(visibility == 1)
+            this.visibility = 1;
+        else
+            this.visibility = visibility;
+    }
+
+    public void addLetter(List<Letter> letters) {
+        if(this.letters == null){
+            this.letters = new ArrayList<>();
+        }
+        this.letters.addAll(letters);
+    }
+
+    public void addReply(List<Reply> replies) {
+        if(this.replies == null){
+            this.replies = new ArrayList<>();
+        }
+        this.replies.addAll(replies);
+    }
 }

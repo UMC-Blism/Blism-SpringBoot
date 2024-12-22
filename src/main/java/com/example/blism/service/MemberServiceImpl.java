@@ -31,9 +31,11 @@ public class MemberServiceImpl {
                 .nickname(request.getNickname())
                 .build();
 
-        Mailbox newMailbox = Mailbox.builder()
-                .owner(newMember)
-                .build();
+//        Mailbox newMailbox = Mailbox.builder()
+//                .owner(newMember)
+//                .build();
+
+        Mailbox newMailbox = Mailbox.createMailbox(newMember);
 
         memberRepository.save(newMember);
         mailboxRepository.save(newMailbox);
@@ -92,6 +94,7 @@ public class MemberServiceImpl {
             Long mailbox_id = mailboxRepository.findByOwner_Id(member.getId()).getId(); // findByUser_Id -> findByOwner_Id
 
             return MemberResponseDTO.ValidateMemberDTO.builder()
+                    .member_id(member.getId())
                     .mailbox_id(mailbox_id)
                     .build();
         } else {
@@ -99,24 +102,7 @@ public class MemberServiceImpl {
         }
     }
 
-//    @Transactional
-//    public MemberResponseDTO.ValidateMemberDTO validateCheckcode(MemberRequestDTO.validateDTO request) {
-//        String checkcode1;
-//
-//        String checkcode2 = request.getCheck_code();
-//        Member member = memberRepository.findByNickname(request.getNickname());
-//        checkcode1 = member.getCheckCode();
-//
-//        if (checkcode1.equals(checkcode2)) {
-//            Long mailbox_id = mailboxRepository.findByOwner_Id(member.getId()).getId(); // findByUser_Id -> findByOwner_Id
-//
-//            return MemberResponseDTO.ValidateMemberDTO.builder()
-//                    .mailbox_id(mailbox_id)
-//                    .build();
-//        } else {
-//            return null;
-//        }
-//    }
+
 
 
 }

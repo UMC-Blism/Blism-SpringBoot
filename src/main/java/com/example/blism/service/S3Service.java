@@ -31,7 +31,7 @@ public class S3Service {
 	@Value("${cloud.aws.s3.path.image}")
 	private String imageFolder;
 
-	private String upload(MultipartFile multipartFile) {
+	public String upload(MultipartFile multipartFile) {
 		String fileName = imageFolder + multipartFile.getOriginalFilename();
 
 		if (!(fileName.endsWith(".png") || fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(
