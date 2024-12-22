@@ -4,6 +4,8 @@ import com.example.blism.apiPayload.ApiResponse;
 import com.example.blism.domain.Letter;
 import com.example.blism.dto.request.CreateLetterRequestDTO;
 import com.example.blism.dto.response.LetterResponseDTO;
+import com.example.blism.repository.LetterRepository;
+import com.example.blism.repository.MemberRepository;
 import com.example.blism.service.LetterService;
 import com.example.blism.service.S3Service;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,6 +30,8 @@ public class LetterController {
 
     private final LetterService letterService;
     private final S3Service s3Service;
+    private final MemberRepository memberRepository;
+    private final LetterRepository letterRepository;
 
     @PostMapping(path = "", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @Operation(summary = "편지 생성", description = "편지를 생성합니다.")
@@ -115,7 +119,7 @@ public class LetterController {
                             value = "{\n" +
                                     "  \"isSuccess\": true,\n" +
                                     "  \"code\": 200,\n" +
-                                    "  \"message\": \"편지 조회 성공\",\n" +
+                                    "  \"message\": \"성공입니다.\",\n" +
                                     "  \"result\": {\n" +
                                     "    \"letterId\": 1,\n" +
                                     "    \"senderId\": 1,\n" +
@@ -181,7 +185,7 @@ public class LetterController {
                             value = "{\n" +
                                     "  \"isSuccess\": true,\n" +
                                     "  \"code\": 200,\n" +
-                                    "  \"message\": \"보낸 편지 조회 성공\",\n" +
+                                    "  \"message\": \"성공입니다.\",\n" +
                                     "  \"result\": [\n" +
                                     "    {\n" +
                                     "      \"letterId\": 1,\n" +
@@ -225,9 +229,15 @@ public class LetterController {
             )
     )
     public ResponseEntity<ApiResponse> getSentLetters(@PathVariable Long userId) {
-        List<LetterResponseDTO> letters = letterService.getSentLetters(userId);
 
-        return ResponseEntity.ok().body(ApiResponse.onSuccess(letters));
+        boolean memberExist = memberRepository.existsById(userId);
+
+        if (memberExist) {
+            List<LetterResponseDTO> letters = letterService.getSentLetters(userId);
+            return ResponseEntity.ok().body(ApiResponse.onSuccess(letters));
+        }
+
+        return ResponseEntity.ok().body(ApiResponse.onFailure(401, "사용자를 찾을 수 없습니다.", null));
     }
 
     @GetMapping("/{userId}/received")
@@ -242,7 +252,7 @@ public class LetterController {
                             value = "{\n" +
                                     "  \"isSuccess\": true,\n" +
                                     "  \"code\": 200,\n" +
-                                    "  \"message\": \"보낸 편지 조회 성공\",\n" +
+                                    "  \"message\": \"성공입니다.\",\n" +
                                     "  \"result\": [\n" +
                                     "    {\n" +
                                     "      \"letterId\": 1,\n" +
@@ -286,31 +296,73 @@ public class LetterController {
             )
     )
     public ResponseEntity<ApiResponse> getReceivedLetters(@PathVariable Long userId) {
-        List<LetterResponseDTO> letters = letterService.getReceivedLetters(userId);
 
-        return ResponseEntity.ok().body(ApiResponse.onSuccess(letters));
+        boolean memberExist = memberRepository.existsById(userId);
+
+        if (memberExist) {
+            List<LetterResponseDTO> letters = letterService.getReceivedLetters(userId);
+            return ResponseEntity.ok().body(ApiResponse.onSuccess(letters));
+        }
+
+        return ResponseEntity.ok().body(ApiResponse.onFailure(401, "사용자를 찾을 수 없습니다.", null));
     }
 
     @PutMapping(value = "/{letterId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "편지 수정", description = "편지를 수정합니다.")
-    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "편지 수정 성공",
-            content = @Content(schema = @Schema(implementation = ApiResponse.class),
-                    examples = @ExampleObject(name = "successExample", value = "{\"status\":\"success\",\"data\":null}")))
+    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = "편지 수정 성공",
+            content = @Content(
+                    schema = @Schema(implementation = ApiResponse.class),
+                    examples = @ExampleObject(
+                            name = "successExample",
+                            value = "{\n" +
+                                    "  \"isSuccess\": true,\n" +
+                                    "  \"code\": 200,\n" +
+                                    "  \"message\": \"성공입니다.\",\n" +
+                                    "  \"result\": [\n" +
+                                    "  ]\n" +
+                                    "}"
+                    )
+            )
+    )
+    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "401",
+            description = " 편지 수정 실패",
+            content = @Content(
+                    schema = @Schema(implementation = ApiResponse.class),
+                    examples = @ExampleObject(
+                            name = "failureExample",
+                            value = "{\n" +
+                                    "  \"isSuccess\": false,\n" +
+                                    "  \"code\": 401,\n" +
+                                    "  \"message\": \"편지를 찾을 수 없습니다.\",\n" +
+                                    "  \"result\": null\n" +
+                                    "}"
+                    )
+            )
+    )
     public ResponseEntity<ApiResponse> updateLetter(@RequestPart("image") MultipartFile image,
                                                     @PathVariable Long letterId,
                                                     @RequestPart CreateLetterRequestDTO createLetterRequestDTO) {
         String photoUrl = null;
 
-        Letter letter = letterService.getLetter(letterId);
+        boolean letterExist = letterRepository.existsById(letterId);
 
-        if (!image.isEmpty()) {
-            photoUrl = s3Service.upload(image);
+        if (letterExist) {
+            Letter letter = letterService.getLetter(letterId);
+
+            if (!image.isEmpty()) {
+                photoUrl = s3Service.upload(image);
+            }
+
+            letter = letter.update(photoUrl, createLetterRequestDTO);
+            letterService.updateLetter(letter);
+
+            return ResponseEntity.ok().body(ApiResponse.onSuccess(null));
         }
 
-        letter = letter.update(photoUrl, createLetterRequestDTO);
+        return ResponseEntity.ok().body(ApiResponse.onFailure(401, "편지를 찾을 수 없습니다.", null));
 
-        letterService.updateLetter(letter);
-
-        return ResponseEntity.ok().body(ApiResponse.onSuccess(null));
     }
 }
