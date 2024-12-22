@@ -36,7 +36,7 @@ public class RepliesServiceImpl {
     private final LetterRepository letterRepository;
     private final S3Service s3Service;
 
-    // ---------------------------- 사진 추가 ------------------
+
     @Transactional
     public Reply addreplies(MultipartFile image, RepliesRequestDTO.addreplyDTO request) {
 
@@ -51,7 +51,7 @@ public class RepliesServiceImpl {
         Reply newReply = Reply.builder()
                 .content(request.getContent())
                 .letter(letter)
-                .photoUrl(request.getPhoto_url())
+                .photoUrl(photoUrl)
                 .font(request.getFont())
                 .mailbox(mailbox)
                 .sender(sender)
@@ -62,7 +62,7 @@ public class RepliesServiceImpl {
 
         return repliesRepository.save(newReply);
     }
-    // ---------------------------- 사진 추가 ------------------
+
 
 
     @Transactional
@@ -75,6 +75,7 @@ public class RepliesServiceImpl {
         // JSON 형식으로 변환
         return allReplies.stream()
                 .map(reply -> RepliesResponseDTO.allsentrepliesDTO.builder()
+                        .reply_id(reply.getId())
                         .content(reply.getContent())
                         .letter_id(reply.getLetter().getId())
                         .receiver_id(reply.getReceiver().getId())
@@ -86,7 +87,7 @@ public class RepliesServiceImpl {
     }
 
 
-    // ----------------------------- <리스트 부분> ---------------------------
+
 
 
 
@@ -99,6 +100,7 @@ public class RepliesServiceImpl {
 
         return allReplies.stream()
                 .map(reply -> RepliesResponseDTO.allreceivedrepliesDTO.builder()
+                        .reply_id(reply.getId())
                         .content(reply.getContent())
                         .letter_id(reply.getLetter().getId())
                         .sender_name(reply.getSender().getNickname())
@@ -108,6 +110,25 @@ public class RepliesServiceImpl {
                         .build())
                 .collect(Collectors.toList());
     }
+
+
+    @Transactional
+    public RepliesResponseDTO.getreplyDTO getreply(Long request) {
+        Reply reply = repliesRepository.findById(request).get();
+
+
+        return RepliesResponseDTO.getreplyDTO.builder()
+                .content(reply.getContent())
+                .letter_id(reply.getLetter().getId())
+                .sender_id(reply.getSender().getId())
+                .sender_name(reply.getSender().getNickname())
+                .font(reply.getFont())
+                .receiver_id(reply.getReceiver().getId())
+                .receiver_name(reply.getReceiver().getNickname())
+                .created_at(reply.getCreatedAt())
+                .photo_url(reply.getPhotoUrl())
+                .build();
+        }
 
 
 
