@@ -17,6 +17,9 @@ public class LetterResponseDTO {
     private String content;
     private String photoUrl;
     private Integer font;
+    private Integer doorDesign;
+    private Integer colorDesign;
+    private Integer decorationDesign;
     private Integer visibility;
     private LocalDateTime createdAt;
 }
