@@ -47,17 +47,17 @@ public class LetterService {
 
         String photoUrl = s3Service.upload(image);
 
-        Letter letter = Letter.builder()
-                .sender(sender.get())
-                .receiver(receiver.get())
-                .mailbox(mailbox.get())
-                .doorNum(dto.getDoorDesign())
-                .colorNum(dto.getColorDesign())
-                .decorationNum(dto.getDecorationDesign())
-                .photoUrl(photoUrl)
-                .content(dto.getContent())
-                .font(dto.getFont())
-                .visibility(dto.getVisibility())
+                        Letter letter = Letter.builder()
+                                .sender(sender.get())
+                                .receiver(receiver.get())
+                                .mailbox(mailbox.get())
+                                .doorNum(dto.getDoorDesign())
+                                .colorNum(dto.getColorDesign())
+                                .decorationNum(dto.getDecorationDesign())
+                                .photoUrl(photoUrl)
+                                .content(dto.getContent())
+                                .font(dto.getFont())
+                                .visibility(dto.getVisibility())
                 .build();
 
         letterRepository.save(letter);
@@ -78,6 +78,9 @@ public class LetterService {
                         .content(letter.getContent())
                         .photoUrl(letter.getPhotoUrl())
                         .font(letter.getFont())
+                        .doorDesign(letter.getDoorNum())
+                        .colorDesign(letter.getColorNum())
+                        .decorationDesign(letter.getDecorationNum())
                         .senderId(letter.getSender().getId())
                         .senderNickname(letter.getSender().getNickname())
                         .receiverId(letter.getReceiver().getId())
@@ -97,6 +100,9 @@ public class LetterService {
                         .content(letter.getContent())
                         .photoUrl(letter.getPhotoUrl())
                         .font(letter.getFont())
+                        .doorDesign(letter.getDoorNum())
+                        .colorDesign(letter.getColorNum())
+                        .decorationDesign(letter.getDecorationNum())
                         .senderId(letter.getSender().getId())
                         .senderNickname(letter.getSender().getNickname())
                         .receiverId(letter.getReceiver().getId())
