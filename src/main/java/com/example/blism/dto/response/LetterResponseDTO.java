@@ -12,6 +12,7 @@ public class LetterResponseDTO {
     private Long letterId;
     private Long senderId;
     private Long receiverId;
+    private Long mailBoxId;
     private String senderNickname;
     private String receiverNickname;
     private String content;
