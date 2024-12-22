@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,10 +34,13 @@ public class RepliesServiceImpl {
     private final MailboxRepository mailboxRepository;
     private final MemberRepository memberRepository;
     private final LetterRepository letterRepository;
+    private final S3Service s3Service;
 
+    // ---------------------------- 사진 추가 ------------------
     @Transactional
-    public Reply addreplies(RepliesRequestDTO.addreplyDTO request) {
+    public Reply addreplies(MultipartFile image, RepliesRequestDTO.addreplyDTO request) {
 
+        String photoUrl = s3Service.upload(image);
 
         Letter letter = letterRepository.findById(request.getLetter_id()).get();
         Mailbox mailbox = mailboxRepository.findById(request.getMailbox_id()).get();
@@ -52,11 +56,14 @@ public class RepliesServiceImpl {
                 .mailbox(mailbox)
                 .sender(sender)
                 .receiver(receiver)
+                .photoUrl(photoUrl)
                 .build();
 
 
         return repliesRepository.save(newReply);
     }
+    // ---------------------------- 사진 추가 ------------------
+
 
     @Transactional
     public List<RepliesResponseDTO.allsentrepliesDTO> getAllSentReplies(Long senderId) {
@@ -73,6 +80,7 @@ public class RepliesServiceImpl {
                         .receiver_id(reply.getReceiver().getId())
                         .receiver_name(reply.getReceiver().getNickname())
                         .created_at(reply.getCreatedAt())
+                        .font(reply.getFont())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -96,9 +104,11 @@ public class RepliesServiceImpl {
                         .sender_name(reply.getSender().getNickname())
                         .sender_id(reply.getSender().getId())
                         .created_at(reply.getCreatedAt())
+                        .font(reply.getFont())
                         .build())
                 .collect(Collectors.toList());
     }
+
 
 
 }

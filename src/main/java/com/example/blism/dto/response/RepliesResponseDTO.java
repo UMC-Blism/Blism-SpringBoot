@@ -1,5 +1,6 @@
 package com.example.blism.dto.response;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,6 +19,7 @@ public class RepliesResponseDTO {
         Long receiver_id;
         String receiver_name;
         LocalDateTime created_at;
+        Integer font;
     }
 
     @Builder
@@ -30,6 +32,6 @@ public class RepliesResponseDTO {
         Long sender_id;
         String sender_name;
         LocalDateTime created_at;
-
+        Integer font;
     }
 }
